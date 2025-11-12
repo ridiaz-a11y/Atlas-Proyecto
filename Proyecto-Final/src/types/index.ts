@@ -24,3 +24,12 @@ export interface RutinaFormData {
   dificultad: 'principiante' | 'intermedio' | 'avanzado'
 }
 
+export interface Actividad {
+  id: string
+  tipo: 'rutina_creada' | 'rutina_editada' | 'rutina_eliminada' | 'ejercicio_agregado' | 'ejercicio_eliminado' | 'rutina_generada_ia'
+  descripcion: string
+  fecha: string
+  rutinaId?: string
+  rutinaNombre?: string
+}
+

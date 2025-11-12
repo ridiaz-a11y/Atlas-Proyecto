@@ -26,6 +26,9 @@ export default function Layout({ children }: LayoutProps) {
               <Link as={RouterLink} to="/rutinas/nueva" color="white" _hover={{ color: 'gray.200' }}>
                 Nueva Rutina
               </Link>
+              <Link as={RouterLink} to="/historial" color="white" _hover={{ color: 'gray.200' }}>
+                Historial
+              </Link>
             </Flex>
           </Flex>
         </Container>

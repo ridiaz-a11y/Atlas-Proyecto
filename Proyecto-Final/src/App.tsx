@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import RutinasList from './pages/RutinasList'
 import RutinaDetail from './pages/RutinaDetail'
 import RutinaForm from './pages/RutinaForm'
+import Historial from './pages/Historial'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/rutinas/nueva" element={<RutinaForm />} />
         <Route path="/rutinas/:id" element={<RutinaDetail />} />
         <Route path="/rutinas/:id/editar" element={<RutinaForm />} />
+        <Route path="/historial" element={<Historial />} />
       </Routes>
     </Layout>
   )

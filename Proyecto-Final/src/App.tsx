@@ -1,6 +1,8 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
+import PageTransition from './components/PageTransition'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -13,12 +15,15 @@ import EjecutarRutina from './pages/EjecutarRutina'
 import Perfil from './pages/Perfil'
 
 function App() {
+  const location = useLocation()
+
   return (
-    <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
       {/* Rutas públicas */}
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
+      <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+      <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
 
       {/* Rutas protegidas */}
       <Route
@@ -26,7 +31,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <Dashboard />
+              <PageTransition>
+                <Dashboard />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
@@ -36,7 +43,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <RutinasList />
+              <PageTransition>
+                <RutinasList />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
@@ -46,7 +55,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <RutinaForm />
+              <PageTransition>
+                <RutinaForm />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
@@ -56,7 +67,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <RutinaDetail />
+              <PageTransition>
+                <RutinaDetail />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
@@ -66,7 +79,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <RutinaForm />
+              <PageTransition>
+                <RutinaForm />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
@@ -76,7 +91,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <EjecutarRutina />
+              <PageTransition>
+                <EjecutarRutina />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
@@ -86,7 +103,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <Historial />
+              <PageTransition>
+                <Historial />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
@@ -96,12 +115,15 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <Perfil />
+              <PageTransition>
+                <Perfil />
+              </PageTransition>
             </Layout>
           </ProtectedRoute>
         }
       />
-    </Routes>
+      </Routes>
+    </AnimatePresence>
   )
 }
 

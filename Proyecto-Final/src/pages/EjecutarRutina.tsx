@@ -9,6 +9,7 @@ export default function EjecutarRutina() {
   const navigate = useNavigate()
   const { rutinas } = useRutinaStore()
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const [currentEjercicioIndex, setCurrentEjercicioIndex] = useState(0)
   const [currentSerie, setCurrentSerie] = useState(1)
   const [isResting, setIsResting] = useState(false)
@@ -80,19 +81,38 @@ export default function EjecutarRutina() {
       
       // Cargar voces (puede tomar un momento)
       const loadVoices = () => {
-        const voice = getFemaleVoice()
-        if (voice) {
-          femaleVoiceRef.current = voice
+        const voices = window.speechSynthesis.getVoices()
+        if (voices.length > 0) {
+          const voice = getFemaleVoice()
+          if (voice) {
+            femaleVoiceRef.current = voice
+            console.log('Voz femenina seleccionada:', voice.name, voice.lang)
+          } else {
+            // Si no encuentra voz femenina, intentar con todas las voces disponibles
+            console.log('Voces disponibles:', voices.map(v => `${v.name} (${v.lang})`))
+          }
         }
       }
       
+      // Forzar carga de voces
+      const forceLoadVoices = () => {
+        // Algunos navegadores necesitan que se llame getVoices() primero
+        window.speechSynthesis.getVoices()
+        setTimeout(loadVoices, 100)
+        setTimeout(loadVoices, 500)
+        setTimeout(loadVoices, 1000)
+      }
+      
       // Intentar cargar voces inmediatamente
-      loadVoices()
+      forceLoadVoices()
       
       // Algunos navegadores cargan las voces de forma asíncrona
       if (window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = loadVoices
+        window.speechSynthesis.onvoiceschanged = forceLoadVoices
       }
+      
+      // También intentar después de un delay
+      setTimeout(forceLoadVoices, 2000)
     }
     
     return () => {
@@ -121,16 +141,56 @@ export default function EjecutarRutina() {
         return
       }
 
+      // Asegurar que las voces estén cargadas
+      if (!femaleVoiceRef.current) {
+        const voices = window.speechSynthesis.getVoices()
+        if (voices.length > 0) {
+          // Buscar voz femenina nuevamente
+          const femaleVoiceNames = [
+            'maría', 'maria', 'monica', 'mónica', 'sofía', 'sofia',
+            'esperanza', 'soledad', 'helena', 'laura', 'carmen', 'sabina',
+            'elsa', 'zira', 'helena', 'sabina'
+          ]
+          
+          let voice = voices.find(v => {
+            const voiceName = v.name.toLowerCase()
+            return femaleVoiceNames.some(name => 
+              voiceName.includes(name.toLowerCase())
+            ) && v.lang.startsWith('es')
+          })
+          
+          if (!voice) {
+            // Buscar cualquier voz en español que no sea masculina
+            const esVoices = voices.filter(v => v.lang.startsWith('es'))
+            voice = esVoices.find(v => {
+              const voiceName = v.name.toLowerCase()
+              return !voiceName.includes('diego') && 
+                     !voiceName.includes('pablo') &&
+                     !voiceName.includes('male') &&
+                     !voiceName.includes('man') &&
+                     !voiceName.includes('hombre')
+            }) || esVoices[0]
+          }
+          
+          if (voice) {
+            femaleVoiceRef.current = voice
+          }
+        }
+      }
+
       synthRef.current.cancel()
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.lang = 'es-ES'
       utterance.rate = 0.85 // Más lento para sonar más dulce
-      utterance.pitch = 1.2 // Más alto para sonar más dulce y suave
+      utterance.pitch = 1.3 // Más alto para sonar más femenino y dulce
       utterance.volume = 1
       
       // Asignar voz femenina si está disponible
       if (femaleVoiceRef.current) {
         utterance.voice = femaleVoiceRef.current
+        console.log('Usando voz:', femaleVoiceRef.current.name)
+      } else {
+        console.warn('No se encontró voz femenina, usando voz por defecto')
       }
 
       utterance.onend = () => {
@@ -246,6 +306,7 @@ export default function EjecutarRutina() {
   const handleStart = async () => {
     isStoppedRef.current = false
     setIsPlaying(true)
+    setIsPaused(false)
     setIsCompleted(false)
     setCurrentEjercicioIndex(0)
     setCurrentSerie(1)
@@ -271,17 +332,26 @@ export default function EjecutarRutina() {
     }
     if (restIntervalRef.current) {
       clearInterval(restIntervalRef.current)
+      restIntervalRef.current = null
     }
     setIsPlaying(false)
+    setIsPaused(true)
   }
 
   const handleResume = () => {
+    isStoppedRef.current = false
     if (synthRef.current) {
       synthRef.current.resume()
     }
     setIsPlaying(true)
+    setIsPaused(false)
     // Continuar con el ejercicio actual
     ejecutarEjercicio(currentEjercicioIndex, currentSerie)
+  }
+
+  const handleFinalizar = () => {
+    handleStop()
+    setIsCompleted(true)
   }
 
   const handleStop = () => {
@@ -296,6 +366,7 @@ export default function EjecutarRutina() {
     }
     
     setIsPlaying(false)
+    setIsPaused(false)
     setIsResting(false)
     setRestTimeLeft(0)
     setIsCompleted(false)
@@ -303,10 +374,21 @@ export default function EjecutarRutina() {
     // Anunciar que se detuvo (después de un pequeño delay para que se cancele primero)
     setTimeout(() => {
       if (synthRef.current) {
+        // Asegurar que tenemos la voz femenina
+        if (!femaleVoiceRef.current) {
+          const voices = window.speechSynthesis.getVoices()
+          const femaleVoiceNames = ['maría', 'maria', 'monica', 'mónica', 'helena', 'sabina', 'elsa', 'zira']
+          const voice = voices.find(v => {
+            const voiceName = v.name.toLowerCase()
+            return femaleVoiceNames.some(name => voiceName.includes(name.toLowerCase())) && v.lang.startsWith('es')
+          })
+          if (voice) femaleVoiceRef.current = voice
+        }
+        
         const utterance = new SpeechSynthesisUtterance('Rutina detenida')
         utterance.lang = 'es-ES'
         utterance.rate = 0.85
-        utterance.pitch = 1.2
+        utterance.pitch = 1.3 // Más alto para sonar más femenino
         if (femaleVoiceRef.current) {
           utterance.voice = femaleVoiceRef.current
         }
@@ -366,7 +448,7 @@ export default function EjecutarRutina() {
             )}
 
             <Flex gap={4} justify="center" mt={4} wrap="wrap">
-              {!isPlaying && !isCompleted && (
+              {!isPlaying && !isPaused && !isCompleted && currentEjercicioIndex === 0 && (
                 <Button
                   leftIcon={<FaPlay />}
                   colorScheme="green"
@@ -399,15 +481,26 @@ export default function EjecutarRutina() {
                 </>
               )}
 
-              {!isPlaying && !isCompleted && currentEjercicioIndex > 0 && (
-                <Button
-                  leftIcon={<FaPlay />}
-                  colorScheme="blue"
-                  size="lg"
-                  onClick={handleResume}
-                >
-                  Continuar
-                </Button>
+              {isPaused && !isCompleted && (
+                <>
+                  <Button
+                    leftIcon={<FaPlay />}
+                    colorScheme="blue"
+                    size="lg"
+                    onClick={handleResume}
+                  >
+                    Continuar con la Rutina
+                  </Button>
+                  <Button
+                    leftIcon={<FaStop />}
+                    colorScheme="red"
+                    size="lg"
+                    onClick={handleFinalizar}
+                    variant="outline"
+                  >
+                    Finalizar
+                  </Button>
+                </>
               )}
 
               {isCompleted && (

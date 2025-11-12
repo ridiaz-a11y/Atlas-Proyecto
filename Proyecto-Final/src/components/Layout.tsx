@@ -22,22 +22,52 @@ export default function Layout({ children }: LayoutProps) {
         <Container maxW="container.xl">
           <Flex justify="space-between" align="center">
             <Link as={RouterLink} to={user ? "/dashboard" : "/"} style={{ textDecoration: 'none' }}>
-              <Flex align="center" gap={2} cursor="pointer" _hover={{ opacity: 0.8 }}>
+              <Flex 
+                align="center" 
+                gap={2} 
+                cursor="pointer" 
+                _hover={{ opacity: 0.8, transform: 'scale(1.05)' }}
+                transition="all 0.2s ease-in-out"
+              >
                 <FaDumbbell size={24} />
                 <Heading size="lg">Atlas Fitness</Heading>
               </Flex>
             </Link>
             <Flex gap={6} align="center">
-              <Link as={RouterLink} to="/dashboard" color="white" _hover={{ color: 'gray.200' }}>
+              <Link 
+                as={RouterLink} 
+                to="/dashboard" 
+                color="white" 
+                _hover={{ color: 'gray.200', transform: 'translateY(-2px)' }}
+                transition="all 0.2s"
+              >
                 Inicio
               </Link>
-              <Link as={RouterLink} to="/rutinas" color="white" _hover={{ color: 'gray.200' }}>
+              <Link 
+                as={RouterLink} 
+                to="/rutinas" 
+                color="white" 
+                _hover={{ color: 'gray.200', transform: 'translateY(-2px)' }}
+                transition="all 0.2s"
+              >
                 Mis Rutinas
               </Link>
-              <Link as={RouterLink} to="/rutinas/nueva" color="white" _hover={{ color: 'gray.200' }}>
+              <Link 
+                as={RouterLink} 
+                to="/rutinas/nueva" 
+                color="white" 
+                _hover={{ color: 'gray.200', transform: 'translateY(-2px)' }}
+                transition="all 0.2s"
+              >
                 Nueva Rutina
               </Link>
-              <Link as={RouterLink} to="/historial" color="white" _hover={{ color: 'gray.200' }}>
+              <Link 
+                as={RouterLink} 
+                to="/historial" 
+                color="white" 
+                _hover={{ color: 'gray.200', transform: 'translateY(-2px)' }}
+                transition="all 0.2s"
+              >
                 Historial
               </Link>
               {user && (

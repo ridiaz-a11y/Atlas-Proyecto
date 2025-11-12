@@ -9,19 +9,58 @@ export default function Landing() {
       <Box bg="blue.600" color="white" py={20}>
         <Container maxW="container.xl">
           <Flex direction="column" align="center" textAlign="center">
-            <FaDumbbell size={64} style={{ marginBottom: '24px' }} />
-            <Heading size="2xl" mb={4}>
+            <Box
+              style={{
+                animation: 'fadeInUp 0.6s ease-out 0.1s both'
+              }}
+            >
+              <FaDumbbell size={64} style={{ marginBottom: '24px' }} />
+            </Box>
+            <Heading 
+              size="2xl" 
+              mb={4}
+              style={{
+                animation: 'fadeInUp 0.6s ease-out 0.2s both'
+              }}
+            >
               Atlas Fitness
             </Heading>
-            <Text fontSize="xl" mb={8} maxW="600px">
+            <Text 
+              fontSize="xl" 
+              mb={8} 
+              maxW="600px"
+              style={{
+                animation: 'fadeInUp 0.6s ease-out 0.3s both'
+              }}
+            >
               Gestiona tus rutinas de ejercicios de manera fácil y eficiente. 
               Crea rutinas personalizadas o deja que nuestra IA las genere por ti.
             </Text>
-            <Flex gap={4}>
-              <Button as={Link} to="/login" colorScheme="whiteAlpha" size="lg" variant="outline">
+            <Flex 
+              gap={4}
+              style={{
+                animation: 'fadeInUp 0.6s ease-out 0.4s both'
+              }}
+            >
+              <Button 
+                as={Link} 
+                to="/login" 
+                colorScheme="whiteAlpha" 
+                size="lg" 
+                variant="outline"
+                _hover={{ transform: 'scale(1.05)' }}
+                transition="all 0.2s"
+              >
                 Iniciar Sesión
               </Button>
-              <Button as={Link} to="/register" colorScheme="whiteAlpha" size="lg">
+              <Button 
+                as={Link} 
+                to="/register" 
+                colorScheme="whiteAlpha" 
+                size="lg"
+                _hover={{ transform: 'scale(1.05)' }}
+                transition="all 0.2s"
+              >
                 Registrarse
               </Button>
             </Flex>
@@ -35,7 +74,17 @@ export default function Landing() {
           Características Principales
         </Heading>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
-          <Card>
+          <Card
+            _hover={{ 
+              shadow: 'xl', 
+              transform: 'translateY(-4px)',
+              transition: 'all 0.3s ease-in-out'
+            }}
+            transition="all 0.3s ease-in-out"
+            style={{
+              animation: 'fadeInUp 0.6s ease-out 0.5s both'
+            }}
+          >
             <CardBody>
               <VStack spacing={4}>
                 <Box p={4} borderRadius="full" bg="blue.100" color="blue.600">
@@ -49,7 +98,17 @@ export default function Landing() {
             </CardBody>
           </Card>
 
-          <Card>
+          <Card
+            _hover={{ 
+              shadow: 'xl', 
+              transform: 'translateY(-4px)',
+              transition: 'all 0.3s ease-in-out'
+            }}
+            transition="all 0.3s ease-in-out"
+            style={{
+              animation: 'fadeInUp 0.6s ease-out 0.6s both'
+            }}
+          >
             <CardBody>
               <VStack spacing={4}>
                 <Box p={4} borderRadius="full" bg="teal.100" color="teal.600">
@@ -63,7 +122,17 @@ export default function Landing() {
             </CardBody>
           </Card>
 
-          <Card>
+          <Card
+            _hover={{ 
+              shadow: 'xl', 
+              transform: 'translateY(-4px)',
+              transition: 'all 0.3s ease-in-out'
+            }}
+            transition="all 0.3s ease-in-out"
+            style={{
+              animation: 'fadeInUp 0.6s ease-out 0.7s both'
+            }}
+          >
             <CardBody>
               <VStack spacing={4}>
                 <Box p={4} borderRadius="full" bg="purple.100" color="purple.600">
@@ -77,7 +146,17 @@ export default function Landing() {
             </CardBody>
           </Card>
 
-          <Card>
+          <Card
+            _hover={{ 
+              shadow: 'xl', 
+              transform: 'translateY(-4px)',
+              transition: 'all 0.3s ease-in-out'
+            }}
+            transition="all 0.3s ease-in-out"
+            style={{
+              animation: 'fadeInUp 0.6s ease-out 0.8s both'
+            }}
+          >
             <CardBody>
               <VStack spacing={4}>
                 <Box p={4} borderRadius="full" bg="green.100" color="green.600">
@@ -97,13 +176,37 @@ export default function Landing() {
       <Box bg="blue.50" py={16}>
         <Container maxW="container.xl">
           <Flex direction="column" align="center" textAlign="center">
-            <Heading size="xl" mb={4}>
+            <Heading 
+              size="xl" 
+              mb={4}
+              style={{
+                animation: 'fadeInUp 0.6s ease-out 0.9s both'
+              }}
+            >
               ¿Listo para comenzar?
             </Heading>
-            <Text fontSize="lg" color="gray.600" mb={8} maxW="600px">
+            <Text 
+              fontSize="lg" 
+              color="gray.600" 
+              mb={8} 
+              maxW="600px"
+              style={{
+                animation: 'fadeInUp 0.6s ease-out 1s both'
+              }}
+            >
               Únete a Atlas Fitness hoy y comienza a alcanzar tus objetivos de fitness
             </Text>
-            <Button as={Link} to="/register" colorScheme="blue" size="lg">
+            <Button 
+              as={Link} 
+              to="/register" 
+              colorScheme="blue" 
+              size="lg"
+              _hover={{ transform: 'scale(1.05)' }}
+              transition="all 0.2s"
+              style={{
+                animation: 'fadeInUp 0.6s ease-out 1.1s both'
+              }}
+            >
               Crear Cuenta Gratis
             </Button>
           </Flex>

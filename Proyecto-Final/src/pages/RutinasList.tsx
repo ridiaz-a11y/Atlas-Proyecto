@@ -42,8 +42,19 @@ export default function RutinasList() {
         </Card>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-          {rutinas.map((rutina) => (
-            <Card key={rutina.id} _hover={{ shadow: 'lg' }}>
+          {rutinas.map((rutina, index) => (
+            <Card 
+              key={rutina.id} 
+              _hover={{ 
+                shadow: 'xl', 
+                transform: 'translateY(-4px)',
+                transition: 'all 0.3s ease-in-out'
+              }}
+              transition="all 0.3s ease-in-out"
+              style={{
+                animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`
+              }}
+            >
               <CardBody>
                 <Flex justify="space-between" align="start" mb={2}>
                   <Box flex={1}>

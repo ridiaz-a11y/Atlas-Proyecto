@@ -1,6 +1,6 @@
 import { Box, Heading, Text, Card, CardBody, Badge, Button, SimpleGrid, Flex, IconButton, useDisclosure, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { FaTrash, FaEdit, FaPlus, FaArrowLeft } from 'react-icons/fa'
+import { FaTrash, FaEdit, FaPlus, FaArrowLeft, FaPlay } from 'react-icons/fa'
 import { useRutinaStore } from '../store/rutinaStore'
 import { useRef } from 'react'
 import EjercicioCard from '../components/EjercicioCard'
@@ -84,9 +84,21 @@ export default function RutinaDetail() {
 
       <Flex justify="space-between" align="center" mb={4}>
         <Heading size="lg">Ejercicios</Heading>
-        <Button leftIcon={<FaPlus />} colorScheme="green" onClick={onFormOpen}>
-          Agregar Ejercicio
-        </Button>
+        <Flex gap={2}>
+          {rutina.ejercicios.length > 0 && (
+            <Button 
+              as={Link} 
+              to={`/rutinas/${rutina.id}/ejecutar`} 
+              leftIcon={<FaPlay />} 
+              colorScheme="blue"
+            >
+              Iniciar con Voz
+            </Button>
+          )}
+          <Button leftIcon={<FaPlus />} colorScheme="green" onClick={onFormOpen}>
+            Agregar Ejercicio
+          </Button>
+        </Flex>
       </Flex>
 
       {rutina.ejercicios.length === 0 ? (

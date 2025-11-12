@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { FaPlus, FaList } from 'react-icons/fa'
 import { useRutinaStore } from '../store/rutinaStore'
 
-export default function Home() {
+export default function Dashboard() {
   const { rutinas } = useRutinaStore()
 
   return (

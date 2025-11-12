@@ -68,7 +68,7 @@ export default function Login() {
                       message: 'Email inválido'
                     }
                   })}
-                  placeholder="rolinpinPCD@email.com"
+                  placeholder="tu@email.com"
                 />
                 {errors.email && <Text color="red.500" fontSize="sm" mt={1}>{errors.email.message}</Text>}
               </FormControl>
@@ -78,7 +78,7 @@ export default function Login() {
                 <Input
                   type="password"
                   {...register('password', { required: 'La contraseña es requerida' })}
-                  placeholder="••••••••"
+                  placeholder="Ingresa tu contraseña"
                 />
                 {errors.password && <Text color="red.500" fontSize="sm" mt={1}>{errors.password.message}</Text>}
               </FormControl>
